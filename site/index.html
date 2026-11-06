@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coran — lire, écouter et apprendre sur Mac</title>
+<meta name="description" content="Une app Mac gratuite et native pour lire le Coran en arabe et en français, écouter la récitation synchronisée, comprendre le contexte et apprendre l'arabe.">
+<meta name="theme-color" content="#0a0a0b">
+<meta property="og:title" content="Coran — lire, écouter et apprendre sur Mac">
+<meta property="og:description" content="Gratuit, natif, sans compte. Récitation synchronisée, contexte des versets, cours d'arabe, stats.">
+<meta property="og:image" content="img/og.png">
+<meta property="og:type" content="website">
+<link rel="icon" href="img/icon.png">
+<link rel="apple-touch-icon" href="img/icon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Inter:wght@400;500;600;700&family=Literata:opsz,wght@7..72,300;7..72,400;7..72,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0b; --fg:#f4f4f5; --muted:#8e8e93; --line:#ffffff14; --card:#161618;
+  --accent:#8fd9b6; --accent-ink:#06130d; --peach:#f6b47b; --lav:#b7a7f0;
+  --serif:"Literata",Georgia,serif; --sans:"Inter",-apple-system,system-ui,sans-serif; --ar:"Amiri Quran","Geeza Pro",serif;
+}
+@media (prefers-color-scheme: light){
+  :root{ --bg:#fbfbfa; --fg:#1c1c1e; --muted:#6e6e73; --line:#00000014; --card:#f0f0ee; --accent:#2f9e72; --accent-ink:#fff; }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+/* Barre */
+nav{position:sticky;top:12px;z-index:10;margin:12px auto 0;max-width:1080px;padding:0 24px}
+.bar{display:flex;align-items:center;gap:20px;padding:8px 10px 8px 14px;border:1px solid var(--line);border-radius:16px;
+  background:color-mix(in srgb,var(--bg) 78%,transparent);backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;text-decoration:none}
+.brand img{width:26px;height:26px;border-radius:7px}
+.links{display:flex;gap:18px;margin-left:auto;font-size:14px;color:var(--muted)}
+.links a{text-decoration:none}.links a:hover{color:var(--fg)}
+.btn{display:inline-flex;align-items:center;gap:8px;font:600 14px var(--sans);text-decoration:none;border-radius:12px;padding:10px 18px;border:1px solid var(--line);transition:.18s}
+.btn.solid{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+.btn.solid:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn.ghost{background:var(--card)}.btn.ghost:hover{border-color:var(--muted)}
+.bar .btn{padding:8px 14px;border-radius:10px}
+
+/* Hero */
+.hero{text-align:center;padding:84px 0 40px}
+.hero .icon{width:104px;height:104px;border-radius:26px;box-shadow:0 20px 60px -12px color-mix(in srgb,var(--accent) 45%,transparent)}
+h1{font:700 clamp(40px,7vw,68px)/1.04 var(--sans);letter-spacing:-.035em;margin:26px 0 0}
+.hero p.lead{max-width:620px;margin:20px auto 0;color:var(--muted);font-size:clamp(16px,2.2vw,19px)}
+.cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:30px}
+.meta{margin-top:16px;color:var(--muted);font-size:13px}
+.ar-sample{font-family:var(--ar);font-size:34px;margin-top:34px;color:var(--accent);direction:rtl}
+
+/* Fenêtre */
+.win{border-radius:14px;border:1px solid var(--line);background:var(--card);overflow:hidden;box-shadow:0 40px 90px -30px #000c,0 0 0 1px #ffffff08}
+.win .dots{display:flex;gap:7px;padding:11px 14px}
+.win .dots i{width:11px;height:11px;border-radius:50%;background:#ff5f57}
+.win .dots i:nth-child(2){background:#febc2e}.win .dots i:nth-child(3){background:#28c840}
+.win img{display:block;width:100%;height:auto}
+.win img.crop{aspect-ratio:1600/560;object-fit:cover;object-position:bottom}
+.shot{margin-top:46px}
+.glow{position:relative}
+.glow:before{content:"";position:absolute;inset:8% 6% -4%;background:radial-gradient(60% 60% at 50% 40%,color-mix(in srgb,var(--accent) 28%,transparent),transparent 70%);filter:blur(40px);z-index:-1}
+
+/* Sections */
+section{padding:84px 0}
+.eyebrow{font:600 12px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+h2{font:700 clamp(28px,4.4vw,42px)/1.1 var(--sans);letter-spacing:-.025em;margin:12px 0 0}
+.sub{color:var(--muted);max-width:560px;margin:14px 0 0;font-size:17px}
+.row{display:grid;grid-template-columns:1fr 1.25fr;gap:56px;align-items:center}
+.row.flip{grid-template-columns:1.25fr 1fr}.row.flip .txt{order:2}
+ul.tick{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:10px;color:var(--muted);font-size:15px}
+ul.tick li{padding-left:26px;position:relative}
+ul.tick li:before{content:"";position:absolute;left:0;top:7px;width:14px;height:14px;border-radius:5px;background:color-mix(in srgb,var(--accent) 22%,transparent);
+  box-shadow:inset 0 0 0 1.5px var(--accent)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:40px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
+.card h3{margin:0 0 6px;font:600 16px var(--sans)}
+.card p{margin:0;color:var(--muted);font-size:14.5px}
+.card .em{font-size:22px;margin-bottom:10px}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:40px}
+
+/* Raccourcis */
+table{width:100%;border-collapse:collapse;margin-top:28px}
+td{padding:13px 0;border-bottom:1px solid var(--line);font-size:15px}
+td:last-child{text-align:right;color:var(--muted)}
+kbd{font:600 12px var(--sans);background:var(--card);border:1px solid var(--line);border-bottom-width:2px;border-radius:7px;padding:3px 8px;margin-right:4px}
+
+/* Installer */
+.steps{counter-reset:s;display:grid;gap:14px;margin-top:30px}
+.step{counter-increment:s;display:flex;gap:16px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.step:before{content:counter(s);flex:none;width:30px;height:30px;border-radius:9px;background:var(--accent);color:var(--accent-ink);font:700 14px var(--sans);display:grid;place-items:center}
+.step b{display:block;margin-bottom:2px}.step span{color:var(--muted);font-size:14.5px}
+pre{margin:10px 0 0;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 14px;font:13px ui-monospace,Menlo,monospace;overflow:auto;color:var(--fg)}
+.note{margin-top:26px;border:1px solid var(--line);border-left:3px solid var(--peach);background:var(--card);border-radius:12px;padding:16px 18px;color:var(--muted);font-size:14px}
+.note b{color:var(--fg)}
+
+footer{border-top:1px solid var(--line);padding:38px 0 60px;color:var(--muted);font-size:13.5px}
+footer .f{display:flex;flex-wrap:wrap;gap:18px 28px;justify-content:space-between}
+footer a{text-decoration:none}footer a:hover{color:var(--fg)}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .7s,transform .7s}.reveal.in{opacity:1;transform:none}
+
+@media (max-width:860px){
+  .row,.row.flip,.split,.cards{grid-template-columns:1fr}.row.flip .txt{order:0}
+  .links{display:none}.bar .btn.ghost{display:none}.bar{justify-content:space-between}.row{gap:30px}
+  section{padding:60px 0}.hero{padding-top:56px}
+}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<nav><div class="bar">
+  <a class="brand" href="#top"><img src="img/icon.png" alt=""><span>Coran</span></a>
+  <div class="links"><a href="#fonctions">Fonctions</a><a href="#raccourcis">Raccourcis</a><a href="#installer">Installer</a><a href="https://github.com/gaissepro/coran-mac">GitHub</a></div>
+  <a class="btn solid" href="https://github.com/gaissepro/coran-mac/releases/latest/download/Coran-macOS-AppleSilicon.zip">Télécharger</a>
+</div></nav>
+
+<header class="hero wrap" id="top">
+  <img class="icon" src="img/icon-512.png" alt="Icône de l'app Coran">
+  <h1>Le Coran, simplement.</h1>
+  <p class="lead">Une app Mac gratuite et native pour lire, écouter et apprendre. Tape une référence comme <b>2:255</b>, appuie sur Entrée : le verset est là.</p>
+  <div class="cta">
+    <a class="btn solid" href="https://github.com/gaissepro/coran-mac/releases/latest/download/Coran-macOS-AppleSilicon.zip">Télécharger pour macOS</a>
+    <a class="btn ghost" href="https://github.com/gaissepro/coran-mac">Voir le code sur GitHub</a>
+  </div>
+  <div class="meta">Gratuit · Sans compte ni publicité · Puce Apple (M1 ou plus récent) · macOS 14+</div>
+  <div class="ar-sample" aria-hidden="true">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+  <div class="shot glow reveal"><div class="win"><div class="dots"><i></i><i></i><i></i></div>
+    <img src="img/hero.png" alt="Lecture d'Al-Fatiha avec la récitation qui défile et les mots expliqués" width="1600" height="1137"></div></div>
+</header>
+
+<section id="fonctions"><div class="wrap">
+  <div class="row reveal">
+    <div class="txt">
+      <div class="eyebrow">Écouter</div>
+      <h2>La récitation suit le texte</h2>
+      <p class="sub">Lance une sourate ou un seul verset : le verset en cours est surligné, les mots se colorent au rythme de la voix et la page défile toute seule.</p>
+      <ul class="tick">
+        <li>5 récitants : Alafasy, Al-Husary, Abdul Basit, Al-Minshawi, As-Sudais</li>
+        <li>Répéter un verset pour le mémoriser, vitesse de 0,75x à 1,25x</li>
+        <li>Les versets écoutés sont gardés en cache sur ton Mac</li>
+      </ul>
+    </div>
+    <div class="win"><div class="dots"><i></i><i></i><i></i></div><img class="crop" loading="lazy" src="img/hero.png" alt="Barre de lecture avec choix du récitant" width="1600" height="1137"></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="row flip reveal">
+    <div class="win"><div class="dots"><i></i><i></i><i></i></div><img loading="lazy" src="img/context.png" alt="En-tête de la sourate Yusuf avec contexte de révélation" width="1600" height="1137"></div>
+    <div class="txt">
+      <div class="eyebrow">Comprendre</div>
+      <h2>Du contexte, pas juste du texte</h2>
+      <p class="sub">Chaque sourate affiche son nom français, son lieu et son ordre de révélation, avec un résumé du contexte. Sous les versets, un bouton ⓘ ouvre les notes.</p>
+      <ul class="tick">
+        <li>570 notes explicatives (traduction Montada) et deux traductions au choix</li>
+        <li>Des mots qui se traduisent mal sont expliqués : <i>taqwa</i>, <i>jihad</i>, <i>fitna</i>, <i>awliya</i>…</li>
+        <li>Les passages délicats ont leur explication, comme le verbe <i>daraba</i> en 4:34</li>
+      </ul>
+    </div>
+  </div>
+  <div class="shot reveal"><div class="win"><div class="dots"><i></i><i></i><i></i></div><img loading="lazy" src="img/info.png" alt="Panneau d'explication du mot salât" width="1600" height="1137"></div></div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="row reveal">
+    <div class="txt">
+      <div class="eyebrow">Apprendre l'arabe</div>
+      <h2>Un parcours qui donne envie de revenir</h2>
+      <p class="sub">Des leçons courtes façon jeu : de l'alphabet jusqu'à remettre un verset dans l'ordre. L'XP, la série de jours et l'objectif quotidien font le reste.</p>
+      <ul class="tick">
+        <li>Alphabet, voyelles, 40 mots du Coran, lecture à voix haute</li>
+        <li>Une révision du jour reprend ce que tu oublies le plus</li>
+        <li>Badges, sons, voix arabe et confettis, quand tu veux</li>
+      </ul>
+    </div>
+    <div class="win"><div class="dots"><i></i><i></i><i></i></div><img loading="lazy" src="img/learn.png" alt="Parcours de leçons d'arabe" width="1600" height="1137"></div>
+  </div>
+  <div class="split reveal">
+    <div class="win"><div class="dots"><i></i><i></i><i></i></div><img loading="lazy" src="img/lesson.png" alt="Exercice : remettre le verset dans l'ordre" width="1600" height="1137"></div>
+    <div class="win"><div class="dots"><i></i><i></i><i></i></div><img loading="lazy" src="img/stats.png" alt="Écran de statistiques" width="1600" height="1137"></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="eyebrow">Et aussi</div>
+  <h2>Tout ce qu'il faut, rien de plus</h2>
+  <div class="cards">
+    <div class="card"><div class="em">🎙️</div><h3>Je récite</h3><p>Récite un verset au micro : l'app compare avec le texte et marque en vert ou en rouge chaque mot reconnu.</p></div>
+    <div class="card"><div class="em">📈</div><h3>Stats</h3><p>Temps de lecture, d'écoute et d'apprentissage, régularité sur 12 semaines, versets lus.</p></div>
+    <div class="card"><div class="em">📖</div><h3>Hadiths</h3><p>Les 40 hadiths de Nawawi et les 40 hadiths qudsi, en arabe et en français.</p></div>
+    <div class="card"><div class="em">🔎</div><h3>Recherche ⌘K</h3><p>Une sourate (« bakara »), une référence, un mot en français ou en arabe.</p></div>
+    <div class="card"><div class="em">🎨</div><h3>À ton goût</h3><p>Thèmes sombre, sépia et clair, six couleurs pastel, taille de l'arabe réglable.</p></div>
+    <div class="card"><div class="em">🔒</div><h3>Chez toi</h3><p>Pas de compte, pas de suivi. Ta progression reste sur ton Mac.</p></div>
+  </div>
+  <div class="shot reveal"><div class="win"><div class="dots"><i></i><i></i><i></i></div><img loading="lazy" src="img/sepia.png" alt="Thème sépia" width="1600" height="1137"></div></div>
+</div></section>
+
+<section id="raccourcis"><div class="wrap" style="max-width:720px">
+  <div class="eyebrow">Au clavier</div>
+  <h2>Pensé pour aller vite</h2>
+  <table>
+    <tr><td><kbd>⌘</kbd><kbd>K</kbd></td><td>Rechercher une sourate, un verset, un mot</td></tr>
+    <tr><td><kbd>⌘</kbd><kbd>+</kbd> <kbd>⌘</kbd><kbd>−</kbd></td><td>Taille de l'arabe</td></tr>
+    <tr><td><kbd>⇧</kbd><kbd>⌘</kbd><kbd>L</kbd></td><td>Changer de thème</td></tr>
+    <tr><td><kbd>⌘</kbd><kbd>T</kbd></td><td>Afficher ou masquer la traduction</td></tr>
+    <tr><td><kbd>⌘</kbd><kbd>]</kbd> <kbd>⌘</kbd><kbd>[</kbd></td><td>Sourate suivante ou précédente</td></tr>
+    <tr><td><kbd>1</kbd>–<kbd>4</kbd> <kbd>↩</kbd></td><td>Répondre et valider dans une leçon</td></tr>
+  </table>
+</div></section>
+
+<section id="installer"><div class="wrap" style="max-width:720px">
+  <div class="eyebrow">Installer</div>
+  <h2>Trois étapes</h2>
+  <div class="steps">
+    <div class="step"><div><b>Télécharge</b><span>Récupère le zip, décompresse-le et glisse <b style="display:inline">Coran</b> dans Applications.</span></div></div>
+    <div class="step"><div><b>Premier lancement</b><span>L'app n'est pas signée par Apple (pas de compte développeur payant). Fais clic droit puis Ouvrir, ou lance cette commande dans Terminal :</span>
+      <pre>xattr -cr /Applications/Coran.app</pre></div></div>
+    <div class="step"><div><b>Ouvre-la</b><span>Réponds aux 5 questions d'accueil pour choisir ton prénom, ton objectif et ta couleur.</span></div></div>
+  </div>
+  <div class="cta" style="justify-content:flex-start;margin-top:26px">
+    <a class="btn solid" href="https://github.com/gaissepro/coran-mac/releases/latest/download/Coran-macOS-AppleSilicon.zip">Télécharger pour macOS</a>
+    <a class="btn ghost" href="https://github.com/gaissepro/coran-mac">Code source</a>
+  </div>
+  <div class="note"><b>À savoir.</b> Le contexte de révélation et le glossaire sont des résumés généraux rédigés avec l'aide d'une IA : ils sont à relire avec un savant et ne remplacent pas un tafsir. La reconnaissance vocale de « Je récite » passe par les serveurs d'Apple, et l'audio est lu en streaming la première fois.</div>
+</div></section>
+
+<footer><div class="wrap f">
+  <div>Gratuit et open source, licence MIT. Fait par <a href="https://github.com/gaissepro">Gaïsse</a>.</div>
+  <div><a href="https://github.com/gaissepro/coran-mac/blob/main/DATA_SOURCES.md">Sources et licences des textes</a> · <a href="https://github.com/gaissepro/coran-mac">GitHub</a> · Interface inspirée de <a href="https://github.com/michaelshimeles/bible">Bible</a> de Rasmic</div>
+</div></footer>
+
+<script>
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
