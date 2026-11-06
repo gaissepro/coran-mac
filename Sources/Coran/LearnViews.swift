@@ -243,6 +243,11 @@ struct LessonView: View {
             selected = n - 1; Audio.shared.play(.tap); return .handled
         }
         .onExitCommand { st.lesson = nil }
+        .onChange(of: st.demoCmd) { _, c in
+            guard let c else { return }
+            if c.hasPrefix("pick-correct"), let q { selected = q.answer; Audio.shared.play(.tap) }
+            if c.hasPrefix("check") || c.hasPrefix("next") { primary() }
+        }
     }
 
     @ViewBuilder func Bottom(_ q: Question) -> some View {

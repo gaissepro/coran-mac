@@ -85,6 +85,8 @@ final class AppState {
     let reciter = Reciter()
     var checkRef: Ref? = nil
     var info: InfoTarget? = nil
+    var demoQuery: String? = nil     // mode film : texte tapé dans la recherche
+    var demoCmd: String? = nil       // mode film : commandes pilotées (leçon, recherche)
     var showStats = false
     var translation: String { didSet { UserDefaults.standard.set(translation, forKey: "translation") } }
     var showGloss: Bool { didSet { UserDefaults.standard.set(showGloss, forKey: "showGloss") } }
@@ -141,7 +143,7 @@ final class AppState {
         let cat = lesson != nil ? "learn" : (reciter.playing ? "listen" : (mode == .learn ? "learn" : "read"))
         times[today, default: [:]][cat, default: 0] += 1
         tickCount += 1
-        if tickCount % 10 == 0, ProcessInfo.processInfo.environment["CORAN_SNAPSHOT"] == nil {
+        if tickCount % 10 == 0, ProcessInfo.processInfo.environment["CORAN_SNAPSHOT"] == nil, ProcessInfo.processInfo.environment["CORAN_FILM"] == nil {
             UserDefaults.standard.set(times, forKey: "time.v1")
         }
     }
@@ -151,7 +153,7 @@ final class AppState {
     }
 
     func saveProfile() {
-        if ProcessInfo.processInfo.environment["CORAN_SNAPSHOT"] != nil { Audio.shared.enabled = false; return }
+        if ProcessInfo.processInfo.environment["CORAN_SNAPSHOT"] != nil || ProcessInfo.processInfo.environment["CORAN_FILM"] != nil { Audio.shared.enabled = false; return }
         if let data = try? JSONEncoder().encode(p) { UserDefaults.standard.set(data, forKey: "profile.v1") }
         Audio.shared.enabled = p.sound
         Audio.shared.voiceOn = p.voice

@@ -59,6 +59,7 @@ h1{font:700 clamp(40px,7vw,68px)/1.04 var(--sans);letter-spacing:-.035em;margin:
 .win .dots i{width:11px;height:11px;border-radius:50%;background:#ff5f57}
 .win .dots i:nth-child(2){background:#febc2e}.win .dots i:nth-child(3){background:#28c840}
 .win img{display:block;width:100%;height:auto}
+.win video{display:block;width:100%;height:auto;background:#000}
 .win img.crop{aspect-ratio:1600/560;object-fit:cover;object-position:bottom}
 .shot{margin-top:46px}
 .glow{position:relative}
@@ -114,7 +115,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
 
 <nav><div class="bar">
   <a class="brand" href="#top"><img src="img/icon.png" alt=""><span>Coran</span></a>
-  <div class="links"><a href="#fonctions">Fonctions</a><a href="#raccourcis">Raccourcis</a><a href="#installer">Installer</a><a href="https://github.com/gaissepro/coran-mac">GitHub</a></div>
+  <div class="links"><a href="#video">Vidéo</a><a href="#fonctions">Fonctions</a><a href="#raccourcis">Raccourcis</a><a href="#installer">Installer</a><a href="https://github.com/gaissepro/coran-mac">GitHub</a></div>
   <a class="btn solid" href="https://github.com/gaissepro/coran-mac/releases/latest/download/Coran-macOS-AppleSilicon.zip">Télécharger</a>
 </div></nav>
 
@@ -124,13 +125,25 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
   <p class="lead">Une app Mac gratuite et native pour lire, écouter et apprendre. Tape une référence comme <b>2:255</b>, appuie sur Entrée : le verset est là.</p>
   <div class="cta">
     <a class="btn solid" href="https://github.com/gaissepro/coran-mac/releases/latest/download/Coran-macOS-AppleSilicon.zip">Télécharger pour macOS</a>
-    <a class="btn ghost" href="https://github.com/gaissepro/coran-mac">Voir le code sur GitHub</a>
+    <a class="btn ghost" href="#video">▶ Voir la vidéo</a>
   </div>
   <div class="meta">Gratuit · Sans compte ni publicité · Puce Apple (M1 ou plus récent) · macOS 14+</div>
   <div class="ar-sample" aria-hidden="true">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
   <div class="shot glow reveal"><div class="win"><div class="dots"><i></i><i></i><i></i></div>
     <img src="img/hero.png" alt="Lecture d'Al-Fatiha avec la récitation qui défile et les mots expliqués" width="1600" height="1137"></div></div>
 </header>
+
+<section id="video" style="padding:30px 0 10px"><div class="wrap" style="max-width:1000px">
+  <div style="text-align:center">
+    <div class="eyebrow">En une minute</div>
+    <h2>Voir l'app en action</h2>
+  </div>
+  <div class="shot reveal" style="margin-top:28px"><div class="win"><div class="dots"><i></i><i></i><i></i></div>
+    <video controls preload="metadata" playsinline poster="img/poster.jpg" aria-label="Présentation de l'app Coran en vidéo">
+      <source src="video/coran-demo.mp4" type="video/mp4">
+      Ta navigation ne lit pas cette vidéo : <a href="video/coran-demo.mp4">télécharge-la</a>.
+    </video></div></div>
+</div></section>
 
 <section id="fonctions"><div class="wrap">
   <div class="row reveal">

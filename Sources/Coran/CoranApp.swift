@@ -14,6 +14,77 @@ struct CoranApp: App {
         }
     }
 
+    /// Mode film : CORAN_FILM=/dossier joue un scénario et capture ses images (frames.txt = temps + fichier).
+    func filmIfRequested() {
+        let env = ProcessInfo.processInfo.environment
+        guard let dir = env["CORAN_FILM"] else { return }
+        Audio.shared.enabled = false; Audio.shared.voiceOn = false
+        var d = Profile()
+        d.name = env["CORAN_NAME"] ?? "Yassine"; d.onboarded = true; d.accent = 0
+        d.xp = 145; d.streak = 4; d.bestStreak = 4; d.lastDay = st.today
+        d.daily = [st.today: 20]; d.done = ["alpha1", "alpha2"]; d.badges = ["first", "lesson1"]
+        d.read = ["1:1", "1:2"]
+        st.p = d
+        let f = DateFormatter(); f.dateFormat = "yyyy-MM-dd"
+        for i in 0..<30 where i % 3 != 2 {
+            let k = f.string(from: Calendar.current.date(byAdding: .day, value: -i, to: Date())!)
+            st.times[k] = ["read": Double(300 + (i * 97) % 900), "listen": Double((i * 53) % 500), "learn": Double(200 + (i * 71) % 600)]
+        }
+        st.quiz = ["answered": 80, "correct": 66]
+        st.mode = .coran; st.surahNumber = 1; st.scrollTo = 1; st.tipDismissed = true
+
+        var events = ""
+        func at(_ t: Double, _ name: String = "", _ block: @escaping () -> Void) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + t) {
+                block()
+                if !name.isEmpty { events += "\(name) \(Date().timeIntervalSince1970)\n" }
+            }
+        }
+
+        func timeline() {
+            try? "\(Date().timeIntervalSince1970)".write(toFile: "\(dir)/t0.txt", atomically: true, encoding: .utf8)
+            // Scène 1 : récitation qui suit le texte
+            at(0.6, "s1") { st.reciter.start(1, from: 1) }
+            at(7.0, "s2") { st.reciter.stop(); st.paletteOpen = true }
+            // Scène 2 : recherche ⌘K puis contexte de la sourate
+            for (t, q) in [(7.8, "k"), (8.2, "ka"), (8.6, "kah"), (9.0, "kahf")] { at(t) { st.demoQuery = q } }
+            at(10.6, "s2b") { st.demoCmd = "palette-go#1" }
+            // Scène 3 : verset, mots expliqués, panneau de contexte
+            at(15.0, "s3") { st.open(Ref(surah: 2, ayah: 3)) }
+            at(17.4, "s3b") { st.info = AppState.InfoTarget(ref: Ref(surah: 2, ayah: 3), focus: "salat") }
+            at(22.0) { st.info = nil }
+            // Scène 4 : parcours d'arabe et leçon
+            at(22.3, "s4") { st.mode = .learn }
+            at(25.8, "s4b") { st.lesson = Curriculum.all.first { $0.id == "alpha3" } }
+            at(28.6) { st.demoCmd = "pick-correct#1" }
+            at(29.9) { st.demoCmd = "check#1" }
+            at(32.0) { st.demoCmd = "next#1" }
+            at(33.4) { st.demoCmd = "pick-correct#2" }
+            at(34.6) { st.demoCmd = "check#2" }
+            at(36.6) { st.lesson = nil }
+            // Scène 5 : stats
+            at(36.9, "s5") { st.showStats = true }
+            at(40.9) { st.showStats = false; st.mode = .coran; st.surahNumber = 1; st.scrollTo = 1 }
+            // Scène 6 : couleurs et thèmes
+            at(41.1, "s6") { st.p.accent = 1 }
+            for i in 2..<6 { at(41.1 + Double(i - 1) * 0.5) { st.p.accent = i } }
+            at(43.4) { st.p.accent = 0; st.theme = .sepia }
+            at(45.0) { st.theme = .light }
+            at(46.6) { st.theme = .dark }
+            at(48.2, "end") {
+                try? events.write(toFile: "\(dir)/events.txt", atomically: true, encoding: .utf8)
+                try? "done".write(toFile: "\(dir)/done.txt", atomically: true, encoding: .utf8)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { NSApp.terminate(nil) }
+            }
+        }
+
+        // Attend le signal « go » (fichier) pour partir : l'enregistrement d'écran démarre avant.
+        let waiter = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { t in
+            if FileManager.default.fileExists(atPath: "\(dir)/go") { t.invalidate(); timeline() }
+        }
+        _ = waiter
+    }
+
     /// Mode test : CORAN_SNAPSHOT=/chemin/dossier  CORAN_SURAH=2  CORAN_QUERY=bakara
     func snapshotIfRequested() {
         guard let dir = ProcessInfo.processInfo.environment["CORAN_SNAPSHOT"] else { return }
@@ -70,7 +141,7 @@ struct CoranApp: App {
 
     var body: some Scene {
         WindowGroup("Coran") {
-            RootView(st: st).onAppear { snapshotIfRequested() }
+            RootView(st: st).onAppear { snapshotIfRequested(); filmIfRequested() }
         }
         .windowStyle(.hiddenTitleBar)
         .commands {

@@ -604,6 +604,8 @@ struct PaletteView: View {
         }
         .onAppear { focus = true; query = ""; sel = 0 }
         .onChange(of: query) { _, _ in sel = 0 }
+        .onChange(of: st.demoQuery) { _, q in if let q { query = q } }
+        .onChange(of: st.demoCmd) { _, c in if c?.hasPrefix("palette-go") == true { go(0) } }
         .onKeyPress(.downArrow) { sel = min(sel + 1, max(0, hits.count - 1)); return .handled }
         .onKeyPress(.upArrow) { sel = max(sel - 1, 0); return .handled }
         .onExitCommand { st.paletteOpen = false }

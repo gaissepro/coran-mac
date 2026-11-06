@@ -48,5 +48,9 @@ Interface inspirée de Rasmic (github.com/michaelshimeles/bible, MIT) : fond #0a
 - Icon/make_icon.swift dessine le logo (ق mentholé + croissant pêche sur fond vert sombre) → icon_1024.png → AppIcon.icns (iconutil), copié par build.sh.
 - Installée dans /Applications/Coran.app (ditto depuis build/) et épinglée au Dock via defaults com.apple.dock persistent-apps. Après chaque build : `ditto build/Coran.app /Applications/Coran.app`.
 
+## Vidéo de présentation
+- L'app sait se filmer : `CORAN_FILM=<dossier>` joue un scénario minuté (récitation, ⌘K, contexte, leçon, stats, thèmes) et attend le fichier `<dossier>/go` pour démarrer ; elle écrit `t0.txt` et `events.txt` (heure réelle de chaque scène). L'enregistrement se fait avec `screencapture -v -o -l<id fenêtre>` (autorisation Enregistrement de l'écran requise pour l'app qui lance la commande).
+- Montage : ffmpeg (fond, masque arrondi, ombre, légendes PNG, intro/outro) → `site/video/coran-demo.mp4` (1080p, ~55 s, sans son).
+
 ## À faire
 Audio de récitation (vrai récitant), mémorisation (hifz) avec répétition espacée, plus de leçons (tajwid, grammaire), Bukhari/Muslim, Riyad as-Salihin (pas de source libre trouvée), icône.

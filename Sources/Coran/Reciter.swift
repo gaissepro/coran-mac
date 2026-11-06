@@ -24,7 +24,7 @@ final class Reciter {
 
     private let player = AVPlayer()
     private var endObs: NSObjectProtocol?
-    private let muted = ProcessInfo.processInfo.environment["CORAN_SNAPSHOT"] != nil
+    private let muted = ProcessInfo.processInfo.environment["CORAN_SNAPSHOT"] != nil || ProcessInfo.processInfo.environment["CORAN_FILM"] != nil
 
     init() {
         reciterId = UserDefaults.standard.string(forKey: "reciter") ?? reciters[0].id
