@@ -5,3 +5,4 @@ build/
 Icon/AppIcon.iconset/
 Icon/make_icon
 *.zip
+site/.vercel/

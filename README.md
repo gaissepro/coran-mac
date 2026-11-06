@@ -4,7 +4,7 @@
 
 Une app **gratuite**, rapide et **native** pour lire, écouter et apprendre le Coran sur Mac. Tout reste sur ton Mac, sans compte ni publicité.
 
-**Site : voir la page de présentation (lien dans la description du dépôt)** · **[Télécharger](https://github.com/gaissepro/coran-mac/releases/latest/download/Coran-macOS-AppleSilicon.zip)**
+**[Site de présentation](https://vf501d8k0u-coran.vercel.app)** · **[Télécharger](https://github.com/gaissepro/coran-mac/releases/latest/download/Coran-macOS-AppleSilicon.zip)**
 
 > English: a free, native macOS app to read, listen to and learn the Quran: Arabic (Uthmani) with French translations, synchronized recitation, context notes, a Duolingo-style Arabic course, voice recitation check and stats. Apple Silicon, macOS 14+.
 
